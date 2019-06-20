@@ -28,7 +28,7 @@ public class Cadastros extends JFrame {
 	private JTextField entDataevt;
 	private JTextField entDescricao;
 	private JTextField entHoraevt;
-	private JComboBox entTipoevt;
+	private JTextField entLocalevt;
 	private JTextField textField;
 
 	/**
@@ -69,7 +69,7 @@ public class Cadastros extends JFrame {
 		lblNewLabel.setBounds(95, 107, 69, 14);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Tipo");
+		JLabel lblNewLabel_1 = new JLabel("Localização");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_1.setBounds(118, 132, 46, 14);
 		contentPane.add(lblNewLabel_1);
@@ -116,14 +116,10 @@ public class Cadastros extends JFrame {
 		entHoraevt.setBounds(174, 73, 73, 20);
 		contentPane.add(entHoraevt);
 		
-		JComboBox<String> entTipoevt = new JComboBox<String>();
-		entTipoevt.addItem("--Selecionar--");
-		entTipoevt.addItem("Prova");
-		entTipoevt.addItem("Entrega Trabalho");
-		entTipoevt.addItem("Palestra");
-		entTipoevt.addItem("Outro");
-		entTipoevt.setBounds(174, 129, 117, 20);
-		contentPane.add(entTipoevt);
+		entLocalevt = new JTextField();
+		entLocalevt.setColumns(10);
+		entLocalevt.setBounds(174, 129, 117, 20);
+		contentPane.add(entLocalevt);
 		
 		JLabel lblNomeUser = new JLabel("User Name");
 		lblNomeUser.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -175,7 +171,7 @@ public class Cadastros extends JFrame {
 		      String cadNomeevt = entNomeevt.getText();
 		      String cadDataevt = entDataevt.getText();
 		      String cadHoraevt = entHoraevt.getText();
-		      String cadTipoevt = entTipoevt.getSelectedItem().toString();
+		      String cadLocalevt = entLocalevt.getText();
 		      String cadDescricao = entDescricao.getText();
 		      
 		      //JComboBoxentTipoevt.getSelectedItem();
@@ -185,15 +181,13 @@ public class Cadastros extends JFrame {
 		      stt.executeUpdate("insert into eventagenda (eventname, eventdate, eventstarttime, location)"	      
 		      		+ "values ('"	      			
 		    			+ cadNomeevt 
-		    			+ "','"
+		    			+ "',STR_TO_DATE('"
 		    			+ cadDataevt
-		    			+ "','"
+		    			+ "', '%d/%m/%Y'),'"
 		    			+ cadHoraevt
 		    			+ "','"
-		    			+ cadTipoevt
-		    			+ "','"
-		    			+ cadDescricao
-		    			+ "')");
+		    			+ cadLocalevt
+		    			+ "');");
 				JOptionPane.showMessageDialog(null, "Dados Salvos!");
 
 		     
