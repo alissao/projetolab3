@@ -41,7 +41,8 @@ public class Main extends JFrame {
 	 * Create the frame.
 	 */
 	public Main() {
-		setTitle("Agenda");
+		setResizable(false);
+		setTitle("Event Agenda");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -49,37 +50,35 @@ public class Main extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnCadastrar = new JButton("Cadastrar");
+		JButton btnCadastrar = new JButton("Register Event");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Cadastros frame = new Cadastros();
 				frame.setVisible(true);
 			}
 		});
-		btnCadastrar.setBounds(102, 127, 91, 66);
+		btnCadastrar.setBounds(20, 127, 173, 66);
 		contentPane.add(btnCadastrar);
 		
-		JButton btnConsultar = new JButton("Consultar");
+		JButton btnConsultar = new JButton("Check Events");
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ExibeConsulta frame = new ExibeConsulta();
 				frame.setVisible(true);
 			}
 		});
-		btnConsultar.setBounds(240, 127, 91, 66);
+		btnConsultar.setBounds(240, 127, 173, 66);
 		contentPane.add(btnConsultar);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(117, 92, 196, 24);
 		contentPane.add(panel);
 		
-		JLabel lblMenu = new JLabel("Bem Vindo!");
+		JLabel lblMenu = new JLabel("Welcome!");
 		panel.add(lblMenu);
-		
-		JLabel lblNewLabel = new JLabel("@");
-		panel.add(lblNewLabel);
 	}
-	public void Consultar(){
+}
+	/*public void Consultar(){
 		 
 	      String url = "jdbc:mysql://localhost:3306/";
 
@@ -116,7 +115,7 @@ public class Main extends JFrame {
 	        {
 	            e.printStackTrace();
 		    }
-		  }
+		  }*/
 	
 
-}
+
