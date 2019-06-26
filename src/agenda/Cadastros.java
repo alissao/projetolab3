@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import javax.swing.JFormattedTextField;
@@ -29,7 +30,9 @@ public class Cadastros extends JFrame {
 	private JTextField entDescricao;
 	private JTextField entHoraevt;
 	private JTextField entLocalevt;
-	private JTextField textField;
+	private JTextField entUserevt;
+	private String[] options = {"Type of Event", "Meeting", "Workshop", "Lecture"};
+	private JComboBox<String> cmbTipoEvt = new JComboBox<String>(options); 
 
 	/**
 	 * Launch the application.
@@ -51,7 +54,7 @@ public class Cadastros extends JFrame {
 	 * Create the frame.
 	 */
 	public Cadastros() {
-		setTitle("Agenda");
+		setTitle("Register Events");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -59,45 +62,45 @@ public class Cadastros extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblCriarEvento = new JLabel("Nome do evento");
+		JLabel lblCriarEvento = new JLabel("Event Name");
 		lblCriarEvento.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCriarEvento.setBounds(45, 14, 119, 14);
+		lblCriarEvento.setBounds(10, 14, 73, 14);
 		contentPane.add(lblCriarEvento);
 		
-		JLabel lblNewLabel = new JLabel("Data");
+		JLabel lblNewLabel = new JLabel("Date");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setBounds(95, 107, 69, 14);
+		lblNewLabel.setBounds(241, 39, 50, 14);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Localização");
+		JLabel lblNewLabel_1 = new JLabel("Location");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_1.setBounds(118, 132, 46, 14);
+		lblNewLabel_1.setBounds(10, 67, 69, 14);
 		contentPane.add(lblNewLabel_1);
 		
 		entNomeevt = new JTextField();
-		entNomeevt.setBounds(174, 11, 168, 20);
+		entNomeevt.setBounds(93, 11, 139, 20);
 		contentPane.add(entNomeevt);
 		entNomeevt.setColumns(10);
 		
 		entDataevt = new JTextField();
-		entDataevt.setBounds(174, 104, 73, 20);
+		entDataevt.setBounds(301, 36, 73, 20);
 		contentPane.add(entDataevt);
 		entDataevt.setColumns(10);
 		
 		
 
 		
-		JLabel lblDescrio = new JLabel("Descri\u00E7\u00E3o/Local");
+		JLabel lblDescrio = new JLabel("Description");
 		lblDescrio.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblDescrio.setBounds(85, 162, 79, 14);
+		lblDescrio.setBounds(20, 129, 63, 14);
 		contentPane.add(lblDescrio);
 		
 		entDescricao = new JTextField();
-		entDescricao.setBounds(174, 160, 204, 62);
+		entDescricao.setBounds(10, 154, 414, 62);
 		contentPane.add(entDescricao);
 		entDescricao.setColumns(10);
 		
-		JButton btnCadastrar = new JButton("Cadastrar Evento");
+		JButton btnCadastrar = new JButton("Register Event");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Cadastrar();
@@ -106,30 +109,34 @@ public class Cadastros extends JFrame {
 		btnCadastrar.setBounds(145, 227, 146, 23);
 		contentPane.add(btnCadastrar);
 		
-		JLabel lblHora = new JLabel("Hora");
+		JLabel lblHora = new JLabel("Time");
 		lblHora.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblHora.setBounds(95, 70, 69, 20);
+		lblHora.setBounds(242, 11, 45, 20);
 		contentPane.add(lblHora);
 		
 		entHoraevt = new JTextField();
 		entHoraevt.setColumns(10);
-		entHoraevt.setBounds(174, 73, 73, 20);
+		entHoraevt.setBounds(301, 11, 73, 20);
 		contentPane.add(entHoraevt);
 		
 		entLocalevt = new JTextField();
 		entLocalevt.setColumns(10);
-		entLocalevt.setBounds(174, 129, 117, 20);
+		entLocalevt.setBounds(93, 64, 139, 20);
 		contentPane.add(entLocalevt);
 		
 		JLabel lblNomeUser = new JLabel("User Name");
 		lblNomeUser.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNomeUser.setBounds(45, 42, 119, 14);
+		lblNomeUser.setBounds(20, 39, 63, 14);
 		contentPane.add(lblNomeUser);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(174, 39, 168, 20);
-		contentPane.add(textField);
+		entUserevt = new JTextField();
+		entUserevt.setColumns(10);
+		entUserevt.setBounds(93, 36, 139, 20);
+		contentPane.add(entUserevt);
+		
+
+		cmbTipoEvt.setBounds(241, 63, 183, 22);
+		contentPane.add(cmbTipoEvt);
 		/*String teste;
 		teste = entTipoevt.getSelectedItem().toString();*/
 		
@@ -167,33 +174,54 @@ public class Cadastros extends JFrame {
 	          stt.execute("USE agenda");    
 	      
 
-		      // create the mysql insert preparedstatement
+		      
+	          /*java.util.Date date = new java.util.Date();
+	          long t = date.getTime();
+	          java.sql.Date sqlDate = new java.sql.Date(t);
+	          java.sql.Time sqlTime = new java.sql.Time(t);*/ 
+	          
+	          // create the mysql insert preparedstatement
 		      String cadNomeevt = entNomeevt.getText();
+		      String cadUserevt = entUserevt.getText();
 		      String cadDataevt = entDataevt.getText();
 		      String cadHoraevt = entHoraevt.getText();
 		      String cadLocalevt = entLocalevt.getText();
 		      String cadDescricao = entDescricao.getText();
+		      Integer cadTipoEvento = cmbTipoEvt.getSelectedIndex();
+		      
 		      
 		      //JComboBoxentTipoevt.getSelectedItem();
 
 		      
 		      
-		      stt.executeUpdate("insert into eventagenda (eventname, eventdate, eventstarttime, location)"	      
+		      stt.executeUpdate("insert into eventagenda (eventname, username, eventdate, eventstarttime, description, location, id_eventtype)"	      
 		      		+ "values ('"	      			
 		    			+ cadNomeevt 
+		    			+ "','"
+		    			+ cadUserevt
 		    			+ "',STR_TO_DATE('"
 		    			+ cadDataevt
 		    			+ "', '%d/%m/%Y'),'"
 		    			+ cadHoraevt
 		    			+ "','"
+		    			+cadDescricao
+		    			+ "','"
 		    			+ cadLocalevt
-		    			+ "');");
-				JOptionPane.showMessageDialog(null, "Dados Salvos!");
+		    			+ "',"
+		    			+ cadTipoEvento.toString()
+		    			+ ");");
+				JOptionPane.showMessageDialog(null, "Registry saved!");
+				/*+ cadDataevt
+    			+ "', '%d/%m/%Y'),'"*/
 
 		     
 		      
 		      con.close();
-		    }
+		    } 
+			catch (SQLIntegrityConstraintViolationException e) 
+			{
+		    	JOptionPane.showMessageDialog(null, "You can't register same types of events on the same day!");
+		    } 
 			catch (Exception e)
 	        {
 	            e.printStackTrace();
